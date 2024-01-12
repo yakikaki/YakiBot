@@ -59,7 +59,7 @@ int main()
 		{
 			// Set presence for the bot
 			client.set_presence(
-				dpp::presence(dpp::ps_dnd, dpp::at_game, "IronEngine")
+				dpp::presence(dpp::ps_online, dpp::at_game, "IronEngine")
 			);
 			
 			// Slash command registration
