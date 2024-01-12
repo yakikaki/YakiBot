@@ -4,8 +4,7 @@
 
 | Name                   | Version      | Supported          |
 | ---------------------- | ------------ | ------------------ |
-| Raiden Shogun (BETA)   | `1.6.x`      | Yes                |
-| Raiden Shogun (Stable) | Not released | -                  |
+| YakiBot (BETA)         | `1.6.x`      | Yes                |
 | D++ BETA               | `10.0.22`    | Only in D++ server |
 
 ## Reporting a Vulnerability
