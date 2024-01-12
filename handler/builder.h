@@ -30,11 +30,12 @@
 #include "../commands/moderation/move.h"
 #include "../commands/moderation/deafen.h"
 #include "../commands/moderation/undeafen.h"
-#include "../commands/moderation/mute.h"
-#include "../commands/moderation/unmute.h"
+#include "../commands/moderation/voice-mute.h"
+#include "../commands/moderation/voice-unmute.h"
 
 #include "../commands/information/ping.h"
-#include "../commands/information/infouser.h"
+#include "../commands/information/userinfo.h"
+#include "../commands/information/invite.h"
 #include "../commands/information/about.h"
 
 void SlashCommandCreate(dpp::cluster& client);
@@ -45,6 +46,11 @@ inline std::map<std::string, commandDef> commands
 	{
 		"ping", { "Check bot latency", ping }
 	},
+
+		{
+		"invite", { "Get the bot's invite link", invite }
+	},
+
 	{
 		"kick",
 			{
@@ -76,7 +82,7 @@ inline std::map<std::string, commandDef> commands
 			}
 	},
 	{
-		"infouser",
+		"userinfo",
 			{
 				"Show mentioned user info", infouser,
 				{
@@ -91,6 +97,12 @@ inline std::map<std::string, commandDef> commands
 				{
 					dpp::command_option(dpp::co_integer, "amount", "Amount of messages to prune, from 2 up to 99", true)
 				}
+			}
+	},
+	{
+		"about",
+			{
+				"The bot's credits", about
 			}
 	},
 	{
@@ -144,7 +156,7 @@ inline std::map<std::string, commandDef> commands
             }
     },
 	{
-        "mute",
+        "voice-mute",
             {
                 "Mute a user in the voice call", mute,
                 {
@@ -153,7 +165,7 @@ inline std::map<std::string, commandDef> commands
             }
     },
 	{
-        "unmute",
+        "voice-unmute",
             {
                 "Unmute a user in the voice call", unmute,
                 {

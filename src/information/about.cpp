@@ -22,5 +22,28 @@
 
 void about(dpp::cluster& client, const dpp::slashcommand_t& event)
 {
-	// Working in progress ...
+    // Calculate uptime
+    auto uptime = client.uptime();
+    auto days = uptime.days;
+    auto hours = uptime.hours;
+    auto minutes = uptime.mins;
+    auto seconds = uptime.secs;
+
+    const auto uptime_str = fmt::format("{}days {}hrs {}mins {}secs", days, hours, minutes, seconds);
+
+    // Get server and member count
+
+    auto about_embed = dpp::embed()
+        .set_color(0xB05BB3)
+        .add_field("About", fmt::format("{} is a multipurpose Discord bot with plenty of useful systems from ticketing to giveaways. This bot was developed in the hope of making servers manageable by only 1 Discord bot, includes all moderation utilities you'd find in other bots and systems that are very user-friendly.", client.me.username))
+        .add_field("Uptime", uptime_str, true)
+        .add_field("Developed by", "YakiKaki#2271", true)
+        .add_field("Honorable mentions", "[D++](https://dpp.dev)", true)
+        .add_field("Support Server", "[Yaki's Studio](https://discord.gg/hFUX6R2kuU)", true)
+        .set_footer(dpp::embed_footer().set_text("Written in C++"))
+        .set_timestamp(std::time(nullptr));
+
+    event.reply(
+        dpp::message(event.command.channel_id, about_embed)
+    );
 }

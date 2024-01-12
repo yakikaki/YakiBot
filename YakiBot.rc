@@ -20,14 +20,14 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
-            VALUE "CompanyName", "The Harshfeudal Projects"
-            VALUE "FileDescription", "[BETA] Raiden Shogun Discord Bot"
+            VALUE "CompanyName", "YakiStudios"
+            VALUE "FileDescription", "[BETA] YakiBot - a powerful discord bot"
             VALUE "FileVersion", FILEVERSION_STR
             VALUE "ProductVersion", PRODUCTVERSION_STR
-            VALUE "ProductName", "Raiden Shogun Discord Bot"
-            VALUE "InternalName", "Raiden Shogun Discord Bot"
-            VALUE "LegalCopyright", "Copyright (C) 2022 Harshfeudal - All rights reserved"
-            VALUE "OriginalFilename", "Raiden Shogun.exe"
+            VALUE "ProductName", "YakiBot Discord Bot"
+            VALUE "InternalName", "YakiBot Discord Bot"
+            VALUE "LegalCopyright", "Copyright (C) 2022-2024 YakiStudios - All rights reserved"
+            VALUE "OriginalFilename", "YakiBot.exe"
         END
     END
     BLOCK "VarFileInfo"
@@ -90,7 +90,7 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_ICON1               ICON                    "raiden.ico"
+IDI_ICON1               ICON                    "yakibot.ico"
 
 #endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////

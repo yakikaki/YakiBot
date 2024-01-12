@@ -53,13 +53,13 @@ int main()
 	const auto token = harshfeudal::Base64::Decode(reader["token"]);
 
 	// Client variable builder
-	dpp::cluster client(token, dpp::i_all_intents);
+	dpp::cluster client(reader["token"], dpp::i_all_intents);
 
 	client.on_ready([&client](const dpp::ready_t& event) 
 		{
 			// Set presence for the bot
 			client.set_presence(
-				dpp::presence(dpp::ps_dnd, dpp::at_game, "Genshin Impact")
+				dpp::presence(dpp::ps_dnd, dpp::at_game, "IronEngine")
 			);
 			
 			// Slash command registration
@@ -88,13 +88,15 @@ int main()
 		});
 
 	// Console log prettier
-	SetConsoleTitle(TEXT("[BETA] 0.1.7.1 - Raiden Shogun Discord Bot - The Harshfeudal Projects"));
+	SetConsoleTitle(TEXT("YakiBot - A powerful discord bot"));
 
 	// Use this logger to check why the code is error (remove when done)
-	// client.on_log(dpp::utility::cout_logger());
+	 client.on_log(dpp::utility::cout_logger());
 
 	// Starting the bot
 	client.start(dpp::st_wait);
 	
 	return 0;
 }
+
+

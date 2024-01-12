@@ -16,7 +16,7 @@
 
 #include <spdlog/spdlog.h>
 #include <dpp/dpp.h>
-#include "../../commands/information/infouser.h"
+#include "../../commands/information/userinfo.h"
 #include "../../handler/handler.h"
 
 // TO DO
