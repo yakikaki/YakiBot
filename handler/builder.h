@@ -1,19 +1,3 @@
-/*
- * Copyright 2022 harshfeudal and The Harshfeudal Projects contributors
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *     http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License. 
- */
-
 #pragma once
 
 #include <map>
@@ -37,6 +21,10 @@
 #include "../commands/information/userinfo.h"
 #include "../commands/information/invite.h"
 #include "../commands/information/about.h"
+#include "../commands/information/set_presence.h"
+
+#include "../commands/utility/Modal.h"
+
 
 void SlashCommandCreate(dpp::cluster& client);
 
@@ -46,8 +34,11 @@ inline std::map<std::string, commandDef> commands
 	{
 		"ping", { "Check bot latency", ping }
 	},
+	{
+		"modal", { "Modal Test", Modal }
+	},
 
-		{
+	{
 		"invite", { "Get the bot's invite link", invite }
 	},
 
@@ -178,10 +169,20 @@ inline std::map<std::string, commandDef> commands
 			{
 				"Change member nickname or reset to their original username", nickname,
 				{
-					dpp::command_option(dpp::co_user,   "target",   "Member needs to change nickname",                  true),
-					dpp::command_option(dpp::co_string, "nickname", "Set their new nickname, blank to reset as normal", false)
+					dpp::command_option(dpp::co_user,   "target",   "the member you're trying to rename",                  true),
+					dpp::command_option(dpp::co_string, "nickname", "Set their new nickname, leave empty to reset",        false)
 				}
 			}
+	},
+
+	{
+		"set-presence",
+		{
+			"Change the bot's presence", setPresence,
+			{
+				dpp::command_option(dpp::co_string, "status", "The new presence", false)
+			}
+		}
 	}
 };
 
@@ -208,6 +209,6 @@ inline void SlashCommandCreate(dpp::cluster& client)
 
 		// Create a global slash commands
 		client.global_bulk_command_create(slashCmds);
-		client.guild_bulk_command_create({ }, 788499352297406484);
+		client.guild_bulk_command_create({ }, 796876694333292554);
 	}
 }

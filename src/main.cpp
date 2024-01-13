@@ -1,19 +1,3 @@
-/*
- * Copyright 2022 harshfeudal and The Harshfeudal Projects contributors
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *     http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License. 
- */
-
 #include <fstream>
 #include <map>
 #include <spdlog/spdlog.h>
@@ -24,43 +8,47 @@
 
 #include "../handler/builder.h"
 #include "../handler/btnHandler.h"
+#include "../handler/frmHandler.h"
+#include "../handler/messageCreateHandler.h"
 
 using json = nlohmann::json;
 
 int main()
 {
-	// Reading JSON configuration file
+	int total_shards = 1;
+	uint32_t clusterid = 0;
+	uint32_t maxclusters = 1;;
+	
 	json reader;
 	{
 		std::ifstream reading("config.json");
 
-		// If cannot read find the configuration file to read
 		if (!reading)
 		{
-			// Send a warning on console log
-			std::cout << "No configuration file found! Please add it with the name \"config.json\"!";
+			std::cout << "[ERROR] No \"config.json\" file found!";
 			std::cin.get();
 
-			// Stop the project immediately
 			exit(0);
 		}
-		
-		// Navigate and read
 		reading >> reader;
 	}
 
-	// Encrypt the token - Base64
 	const auto token = harshfeudal::Base64::Decode(reader["token"]);
 
-	// Client variable builder
-	dpp::cluster client(reader["token"], dpp::i_all_intents);
+	// Client constructor
+	dpp::cluster client(reader["token"], dpp::i_all_intents, total_shards, clusterid, maxclusters);
 
 	client.on_ready([&client](const dpp::ready_t& event) 
 		{
 			// Set presence for the bot
-			client.set_presence(
-				dpp::presence(dpp::ps_online, dpp::at_game, "IronEngine")
-			);
+			if (dpp::run_once<struct register_bot_commands>()) {
+
+				client.set_presence(dpp::presence(dpp::presence_status::ps_online, dpp::activity_type::at_custom, "Starting up..."));
+
+				client.start_timer([&client](const dpp::timer& timer) {
+					client.set_presence(dpp::presence(dpp::presence_status::ps_online, dpp::activity_type::at_watching, std::to_string(dpp::get_user_cache()->count()) + " members!"));
+				}, 120);
+			}
 			
 			// Slash command registration
 			SlashCommandCreate(client);
@@ -71,10 +59,19 @@ int main()
 			std::cout << "Dpp version: " << dpp::utility::version() << std::endl;
 		});
 
+
+	client.on_message_create([&client](const dpp::message_create_t& event) {
+			messageEventHandler(event);
+		});
+
 	client.on_button_click([](const dpp::button_click_t& event)
 		{
-			// Handling the button event
 			ButtonHandle(event);
+		});
+
+	client.on_form_submit([](const dpp::form_submit_t& event)
+		{
+			modalHandler(event);
 		});
 
 	client.on_slashcommand([&client](const dpp::slashcommand_t& event)
@@ -87,13 +84,11 @@ int main()
 				commandFilter->second.function(client, event);
 		});
 
-	// Console log prettier
 	SetConsoleTitle(TEXT("YakiBot - A powerful discord bot"));
 
-	// Use this logger to check why the code is error (remove when done)
+	//good for debugging
 	 client.on_log(dpp::utility::cout_logger());
 
-	// Starting the bot
 	client.start(dpp::st_wait);
 	
 	return 0;
